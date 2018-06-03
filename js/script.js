@@ -16,7 +16,9 @@ $(function() {
 	$("#selectImage").change(function() {
 		cuurentImage = null;
 		originalImageData = null;
+		currentImageData = null;
 		readImageInput(this, imageLoaded);
+		resetColorTable();
 		this.value = "";
 	});
 	
@@ -214,6 +216,11 @@ function updateColor(newColor, baseColor) {
 function resetColorTable() {
 	var stringTable = '[{ "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }]';
 	colorTable = JSON.parse(stringTable);
+	
+	document.getElementById('ffca8a').jscolor.fromString('ffca8a');
+	document.getElementById('e0975c').jscolor.fromString('e0975c');
+	document.getElementById('a85636').jscolor.fromString('a85636');
+	document.getElementById('6f2919').jscolor.fromString('6f2919');
 }
 
 // RGB to HEX
