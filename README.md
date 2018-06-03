@@ -14,6 +14,9 @@ To make your custom clothes dyeable, make sure to color them with the default St
 
 ### Editing the default color schemes
 You can change the correlation between the dye and the applied color by editing the ``colorOptions`` table of the item. ``colorOptions`` is an array of color palettes, where each palette is presented by string-hex code pair, where key is the default value of the item and value is the overriding color.
+
+If you don't want to create the table manually, you can try [a web version](https://krashv.github.io/Starbound-ColorableCustomClothes/)
+
 *COMMENTARIES MUST BE OMITTED*
 ```json5
 "colorOptions" : [
