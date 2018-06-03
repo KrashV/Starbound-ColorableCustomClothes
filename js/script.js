@@ -34,10 +34,14 @@ $(function() {
 	resetColorTable();
 	
 	$('#btnSave').on('click', function() {
-		alert("Copy the following:\n\"colorOptions\":" + JSON.stringify(colorTable));
+		alert("Copy the following:\n\n\"colorOptions\": " + JSON.stringify(colorTable));
 	});
 });
 
+/**
+  * Reads the image input
+  * https://github.com/Silverfeelin/Starbound-Hatter/blob/master/scripts/drawables.js
+**/
 function readImageInput(input, callback) {
 	if (input.files && input.files.length > 0) {
 		// Use first file. By default, users shouldn't be able to select multiple files.
@@ -54,6 +58,10 @@ function readImageInput(input, callback) {
 	}
 }
 
+/**
+  * Process the loading of the selected image
+  * https://github.com/Silverfeelin/Starbound-Hatter/blob/master/scripts/drawables.js
+**/
 function imageLoaded() {
   var image = this;
   // Animate the preview update in three steps.
@@ -161,6 +169,11 @@ function drawResizedImage(canvas, image, scale, srcStart, srcSize, destStart, de
 	)
 }
 
+/**
+  * Updates the color on the canvas
+  * @param {jscolor} newColor - new color
+  * @param {array} baseColor - RGB value of the base image
+**/
 function updateColor(newColor, baseColor) {
 	// examine every pixel, 
 	// change any old rgb to the new-rgb
@@ -197,11 +210,13 @@ function updateColor(newColor, baseColor) {
 	)
 }
 
+// Initial colorTable setup
 function resetColorTable() {
 	var stringTable = '[{ "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }]';
 	colorTable = JSON.parse(stringTable);
 }
 
+// RGB to HEX
 function rgbToHex(r, g, b) {
     return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
