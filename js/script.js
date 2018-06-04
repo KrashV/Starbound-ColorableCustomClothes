@@ -19,6 +19,7 @@ $(function() {
 		currentImageData = null;
 		readImageInput(this, imageLoaded);
 		resetColorTable();
+		$('#result').val('\"colorOptions\":'+JSON.stringify(colorTable));
 		this.value = "";
 	});
 	
@@ -26,18 +27,9 @@ $(function() {
 	img = new Image();
 	img.onload = function() {
 		drawResizedImage($("#cvsPrevewImage").get(0), img, 2);
+		resetColorTable();
 	};
 	img.src = "images/pants.png";
-	
-	// Bind select table
-	$('select').on('change', function() {
-		resetPage($(this)[0].selectedIndex);
-	})
-	resetColorTable();
-	
-	$('#btnSave').on('click', function() {
-		alert("Copy the following:\n\n\"colorOptions\": " + JSON.stringify(colorTable));
-	});
 });
 
 /**
@@ -201,6 +193,7 @@ function updateColor(newColor, baseColor) {
 			var index = $("#lstSelectColor")[0].selectedIndex;
 			var color = newColor.toHEXString().replace('#', '');
 			colorTable[index][rgbToHex(baseColor[0], baseColor[1], baseColor[2])] = color;
+			
 		}
 	}
 	// put the altered data back on the canvas
@@ -210,12 +203,14 @@ function updateColor(newColor, baseColor) {
 	  imageDataCopy.width,
 	  imageDataCopy.height
 	)
+	$('#result').val('\"colorOptions\":'+JSON.stringify(colorTable));
 }
 
 // Initial colorTable setup
 function resetColorTable() {
 	var stringTable = '[{ "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }, { "ffca8a" : "ffca8a", "e0975c" : "e0975c", "a85636" : "a85636", "6f2919" : "6f2919" }]';
 	colorTable = JSON.parse(stringTable);
+	
 	
 	document.getElementById('ffca8a').jscolor.fromString('ffca8a');
 	document.getElementById('e0975c').jscolor.fromString('e0975c');
