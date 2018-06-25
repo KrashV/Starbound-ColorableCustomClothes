@@ -44,7 +44,7 @@ function isArmor(item)
 end
 
 function recolor(output, currentDirectives, dyeDirectives, dyeColorIndex)
-
+  local customDirectiveMinLength = 4500
   local customDyeDirectiveSignal = "?scale=1.00;"
   local customDirectivesPositionStart, customDirectivesPositionEnd = string.find(currentDirectives, customDyeDirectiveSignal)
   
@@ -59,7 +59,7 @@ function recolor(output, currentDirectives, dyeDirectives, dyeColorIndex)
 
 		return output:descriptor(), 1
 	  end
-  elseif string.len(currentDirectives) > 10000 then
+  elseif string.len(currentDirectives) > customDirectiveMinLength then
 	output:setInstanceValue("colorIndex", dyeColorIndex)
 	output:setInstanceValue("directives", currentDirectives .. customDyeDirectiveSignal .. dyeDirectives)
 	return output:descriptor(), 1
