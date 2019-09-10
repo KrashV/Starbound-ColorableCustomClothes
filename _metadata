@@ -3,6 +3,6 @@
   "description" : "Safely recolor your custom clothes!",
   "friendlyName" : "Colorable Custom Clothes",
   "includes" : [],
-  "name" : "colorablecustomclosthes",
+  "name" : "colorablecustomclothes",
   "version" : "v.1.0"
 }
