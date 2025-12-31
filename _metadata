@@ -1,8 +1,8 @@
 {
-  "author" : "Degranon",
+  "author" : "Degranon / Heartleigh",
   "description" : "Safely recolor your custom clothes!",
   "friendlyName" : "Colorable Custom Clothes",
-  "includes" : [],
+  "includes" : ["XRC_INFAUGMENTS"],
   "name" : "colorablecustomclothes",
-  "version" : "v.1.0"
+  "version" : "v.1.2.0"
 }
