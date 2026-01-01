@@ -80,7 +80,7 @@ end
 
 function checkModsFor(name) -- no clue if there's a non-oSB way to do this
   local modlist = root.assetSourcePaths and root.assetSourcePaths(true)
-  for k,v in pairs(modlist or {}) do
+  for _,v in pairs(modlist or {}) do
     if v.name == name then
       return true 
     end
@@ -89,11 +89,11 @@ function checkModsFor(name) -- no clue if there's a non-oSB way to do this
 end
 
 function recolor(output, fullDirectives, newDyeDirectives, dyeColorIndex)
-  local customDyeDirectivesSignal = "?scale=1.00;"
-  local customDyeDirectivesPosition = string.find(fullDirectives, customDyeDirectivesSignal)
-
   -- custom clothing
   if string.find(fullDirectives, "%?crop") then
+    local customDyeDirectivesSignal = "?scale=1.00;"
+    
+    local customDyeDirectivesPosition = string.find(fullDirectives, customDyeDirectivesSignal)
     local currentCustomDyeDirectives = customDyeDirectivesPosition 
      and string.sub(fullDirectives, customDyeDirectivesPosition) 
      or ""
@@ -104,7 +104,11 @@ function recolor(output, fullDirectives, newDyeDirectives, dyeColorIndex)
       
       local flipDirectives = output:instanceValue("flipDirectives", "")
       if flipDirectives ~= "" then
-        output:setInstanceValue("flipDirectives", flipDirectives:gsub(currentCustomDyeDirectives:gsub("%?", "%%?"), "") .. customDyeDirectivesSignal .. newDyeDirectives)
+        local customDyeFlipDirectivesPosition = string.find(flipDirectives, customDyeDirectivesSignal)
+        local currentCustomDyeFlipDirectives = customDyeFlipDirectivesPosition
+         and string.sub(flipDirectives, customDyeFlipDirectivesPosition) 
+         or ""
+        output:setInstanceValue("flipDirectives", flipDirectives:gsub(currentCustomDyeFlipDirectives:gsub("%?", "%%?"), "") .. customDyeDirectivesSignal .. newDyeDirectives)
       end
 
       return output:descriptor(), checkModsFor("XRC_INFAUGMENTS") and 0 or 1
