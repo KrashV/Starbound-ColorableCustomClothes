@@ -89,11 +89,11 @@ function checkModsFor(name) -- no clue if there's a non-oSB way to do this
 end
 
 function recolor(output, fullDirectives, newDyeDirectives, dyeColorIndex)
+  local customDyeDirectivesSignal = "?scale=1.00;"
+  local customDyeDirectivesPosition = string.find(fullDirectives, customDyeDirectivesSignal)
+
   -- custom clothing
-  if string.find(fullDirectives, "%?crop") then
-    local customDyeDirectivesSignal = "?scale=1.00;"
-    
-    local customDyeDirectivesPosition = string.find(fullDirectives, customDyeDirectivesSignal)
+  if string.find(fullDirectives, "%?crop") or customDyeDirectivesPosition then
     local currentCustomDyeDirectives = customDyeDirectivesPosition 
      and string.sub(fullDirectives, customDyeDirectivesPosition) 
      or ""
