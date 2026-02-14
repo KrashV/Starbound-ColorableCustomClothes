@@ -2,9 +2,13 @@ require "/scripts/util.lua"
 require "/scripts/augments/item.lua"
 
 function paletteSwapDirective(color)
-  local directive = "replace"
-  for key,val in pairs(color) do
-    directive = directive .. ";" .. key .. "=" .. val
+  local directive, keys = "replace", {}
+  for key in pairs(color) do 
+    table.insert(keys, key) 
+  end
+  table.sort(keys)
+  for _,key in ipairs(keys) do
+    directive = directive .. ";" .. key .. "=" .. color[key]
   end
   return directive
 end
@@ -43,36 +47,6 @@ function isArmor(item)
   return armors[item:type()] == true
 end
 
-function recolor(output, currentDirectives, dyeDirectives, dyeColorIndex)
-  local customDyeDirectiveSignal = "?scale=1.00;"
-  local customDirectivesPositionStart, customDirectivesPositionEnd = string.find(currentDirectives, customDyeDirectiveSignal)
-  
-  if customDirectivesPositionStart and customDirectivesPositionEnd then
-	  local currentDyeDirectives = customDirectivesPositionEnd + 1 < string.len(currentDirectives) 
-		and string.sub(currentDirectives, customDirectivesPositionEnd + 1) 
-		or ""
-	  if dyeDirectives ~= currentDyeDirectives then
-		output:setInstanceValue("colorIndex", dyeColorIndex)
-		output:setInstanceValue("directives", string.sub(currentDirectives, 1, customDirectivesPositionEnd) .. dyeDirectives)
-
-		return output:descriptor(), 1
-	  end
-  elseif string.match(currentDirectives, "?blendmult") then
-	output:setInstanceValue("colorIndex", dyeColorIndex)
-	output:setInstanceValue("directives", currentDirectives .. customDyeDirectiveSignal .. dyeDirectives)
-	return output:descriptor(), 1
-  else
-	  if dyeDirectives ~= currentDirectives then
-		if dyeColorIndex then
-			output:setInstanceValue("colorIndex", dyeColorIndex)
-		end
-		output:setInstanceValue("directives", dyeDirectives)
-
-		return output:descriptor(), 1
-	  end	  
-  end
-end
-
 function apply(input)
   local output = Item.new(input)
 
@@ -83,19 +57,72 @@ function apply(input)
   local dyeColorIndex = config.getParameter("dyeColorIndex")
   local dyeDirectives = config.getParameter("dyeDirectives")
 
-  local colorOptions = getColorOptions(output)
   local currentDirectives = getDirectives(output)
   
   if dyeColorIndex then
+    local colorOptions = getColorOptions(output)
     if not isEmpty(colorOptions) then
       dyeDirectives = "?" .. util.tableWrap(colorOptions, dyeColorIndex + 1)
-	  return recolor(output, currentDirectives, dyeDirectives, dyeColorIndex)
+      
+      return recolor(output, currentDirectives, dyeDirectives, dyeColorIndex)
     end
 
   elseif dyeDirectives then
     if type(dyeDirectives) == "table" then
       dyeDirectives = "?" .. paletteSwapDirective(dyeDirectives)
     end
-	return recolor(output, currentDirectives, dyeDirectives, dyeColorIndex)
+
+    return recolor(output, currentDirectives, dyeDirectives)
+  end
+end
+
+
+
+function checkModsFor(name) -- no clue if there's a non-oSB way to do this
+  local modlist = root.assetSourcePaths and root.assetSourcePaths(true)
+  for _,v in pairs(modlist or {}) do
+    if v.name == name then
+      return true 
+    end
+  end
+  return false
+end
+
+function recolor(output, fullDirectives, newDyeDirectives, dyeColorIndex)
+  local customDyeDirectivesSignal = "?scale=1.00;"
+  local customDyeDirectivesPosition = string.find(fullDirectives, customDyeDirectivesSignal)
+
+  -- custom clothing
+  if string.find(fullDirectives, "%?crop") or customDyeDirectivesPosition then
+    local currentCustomDyeDirectives = customDyeDirectivesPosition 
+     and string.sub(fullDirectives, customDyeDirectivesPosition) 
+     or ""
+
+    if customDyeDirectivesSignal .. newDyeDirectives ~= currentCustomDyeDirectives then
+      output:setInstanceValue("colorIndex", dyeColorIndex)
+      output:setInstanceValue("directives", fullDirectives:gsub(currentCustomDyeDirectives:gsub("%?", "%%?"), "") .. customDyeDirectivesSignal .. newDyeDirectives)
+      
+      local flipDirectives = output:instanceValue("flipDirectives", "")
+      if flipDirectives ~= "" then
+        local customDyeFlipDirectivesPosition = string.find(flipDirectives, customDyeDirectivesSignal)
+        local currentCustomDyeFlipDirectives = customDyeFlipDirectivesPosition
+         and string.sub(flipDirectives, customDyeFlipDirectivesPosition) 
+         or ""
+        output:setInstanceValue("flipDirectives", flipDirectives:gsub(currentCustomDyeFlipDirectives:gsub("%?", "%%?"), "") .. customDyeDirectivesSignal .. newDyeDirectives)
+      end
+
+      return output:descriptor(), checkModsFor("XRC_INFAUGMENTS") and 0 or 1
+    end
+
+  -- non-custom clothing
+  elseif newDyeDirectives ~= fullDirectives then
+    output:setInstanceValue("colorIndex", dyeColorIndex)
+    if dyeColorIndex then
+      output:setInstanceValue("directives", nil)
+    else
+      output:setInstanceValue("directives", newDyeDirectives)
+    end
+
+    return output:descriptor(), checkModsFor("XRC_INFAUGMENTS") and 0 or 1
   end
 end
