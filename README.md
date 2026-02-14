@@ -5,12 +5,14 @@ A starbound mod for coloring the custom clothes.
 The mod is designed to work with [Silverfeelin's Outfit Generator](https://github.com/Silverfeelin/Starbound-OutfitGenerator)'s output. Click the link and follow the instructions.
 
 ## Installation
-Download the [latest release](https://github.com/KrashV/Starbound-ColorableCustomClothes/releases) and put it in your starbound `mods` folder.
+Download the [latest release](https://github.com/KrashV/Starbound-ColorableCustomClothes/releases) and put it in your starbound `mods` folder, or get it on the Steam Workshop.
 
 ## Usage
 
 ### Designing your armor
-To make your custom clothes dyeable, make sure to color them with the default Starbound palette: the most common colors are #ffca8a ![#ffca8a](https://placehold.it/15/ffca8a/000000?text=+), #e0975c ![#e0975c](https://placehold.it/15/e0975c/000000?text=+), #a85636 ![#a85636](https://placehold.it/15/a85636/000000?text=+) and #6f2919 ![#6f2919](https://placehold.it/15/6f2919/000000?text=+).
+To make your custom clothes dyeable, make sure to color them with the default Starbound palette: the most common colors are #ffca8a, #e0975c, #a85636 and #6f2919 as shown below.
+<p><img width="120" height="100" alt="image" src="https://github.com/user-attachments/assets/04ffc3e3-7df1-43a3-9aeb-f0ebb0b31900" /></p>
+
 
 ### Editing the default color schemes
 You can change the correlation between the dye and the applied color by editing the ``colorOptions`` table of the item. ``colorOptions`` is an array of color palettes, where each palette is presented by string-hex code pair, where key is the default value of the item and value is the overriding color.
